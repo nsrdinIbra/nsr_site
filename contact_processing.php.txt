@@ -1,0 +1,37 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // استقبال وتطهير البيانات القادمة من النموذج
+    $name    = strip_tags(trim($_POST["name"]));
+    $email   = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+    $message = trim($_POST["message"]);
+
+    // التأكد من أن الحقول ليست فارغة وأن البريد صحيح
+    if (empty($name) || empty($message) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        // إعادة المستخدم مع رسالة خطأ (يمكن تطويرها لاحقاً)
+        echo "الرجاء التأكد من تعبئة جميع الحقول بشكل صحيح.";
+        exit;
+    }
+
+    // إعدادات البريد الإلكتروني
+    $to      = "nasrbalola03@gmail.com";
+    $subject = "رسالة جديدة من موقعك الشخصي بواسطة: " . $name;
+    
+    $email_content = "الاسم: $name\n";
+    $email_content .= "البريد الإلكتروني: $email\n\n";
+    $email_content .= "الرسالة:\n$message\n";
+
+    $headers = "From: $name <$email>";
+
+    // محاولة إرسال البريد
+    if (mail($to, $subject, $email_content, $headers)) {
+        // رسالة نجاح (يمكنك تحويله لصفحة شكر أو إظهار تنبيه)
+        echo "شكراً لك! تم إرسال رسالتك بنجاح.";
+    } else {
+        echo "عذراً، حدث خطأ أثناء إرسال الرسالة. يجدر المحاولة لاحقاً.";
+    }
+} else {
+    // إذا تم الوصول للملف مباشرة بدون إرسال النموذج
+    header("Location: index.php");
+    exit;
+}
+?>

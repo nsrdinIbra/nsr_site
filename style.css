@@ -1,0 +1,45 @@
+body{
+    background-color: aliceblue;
+    text-align: center;
+}
+/* حاوية الصور لتظهر في المنتصف وبجانب بعضها */
+.images-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* تعديل الأحجام لتكون أصغر ومناسبة للموقع */
+.profile-img {
+  width: 200px;   /* العرض المناسب */
+  height: 200px;  /* الارتفاع ليصبح المربع متساوي الأبعاد */
+  object-fit: cover; /* لقص الصورة بشكل متناسق دون تشوه */
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* تأثير الحركة والتكبير عند مرور الماوس */
+.profile-img:hover {
+  transform: scale(1.08); /* تكبير خفيف عند اللمس */
+  box-shadow: 0 8px 16px rgba(213, 219, 55, 0.5); /* إضاءة خفيفة بلون الموقع */
+}
+
+/* حاوية قسم معلومات عني لترتيب العناصر أفقياً */
+.about-flex-container {
+  display: flex;
+  align-items: center; /* محاذاة الصورة والنص في المنتصف عمودياً */
+  justify-content: center;
+  gap: 30px; /* المسافة بين النص والصورة */
+  flex-wrap: wrap; /* لكي تنزل الصورة أسفل النص تلقائياً في الشاشات الصغيرة جداً */
+  margin-top: 20px;
+  text-align: right;
+}
+
+/* تنسيق حاوية النص */
+.about-text {
+  max-width: 600px;
+}
