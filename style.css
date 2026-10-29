@@ -1,45 +1,259 @@
-body{
-    background-color: aliceblue;
+/* ==========================================
+   1. التنسيقات العامة والأساسية للموقع
+   ========================================== */
+body {
+    background-color: rgb(7, 45, 52);
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     text-align: center;
 }
-/* حاوية الصور لتظهر في المنتصف وبجانب بعضها */
+
+/* ==========================================
+   2. الهيدر والنافيجيشن (الأزرار)
+   ========================================== */
+header {
+    background-color: rgb(31, 23, 28);
+    padding: 15px;
+    text-align: center;
+}
+
+header p {
+    color: #ffffff;
+    margin: 0 0 10px 0;
+}
+
+header h1 {
+    color: rgb(213, 219, 55);
+    margin: 0 0 15px 0;
+}
+
+.nav-btn {
+    background-color: transparent;
+    color: rgb(213, 223, 23);
+    border: 1px solid rgb(213, 223, 23);
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.nav-btn.active, 
+.nav-btn:hover {
+    background-color: rgb(213, 219, 55);
+    color: rgb(7, 45, 52);
+}
+
+/* ==========================================
+   3. المحتوى والأقسام (Tabs)
+   ========================================== */
+main {
+    text-align: center;
+    min-height: 400px;
+}
+
+.tab-content {
+    display: none; /* إخفاء الأقسام افتراضياً */
+    padding: 20px;
+    color: white;
+}
+
+.tab-content.active {
+    display: block; /* إظهار القسم النشط فقط */
+}
+
+/* ==========================================
+   4. تنسيقات الصور والميديا
+   ========================================== */
 .images-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-/* تعديل الأحجام لتكون أصغر ومناسبة للموقع */
 .profile-img {
-  width: 200px;   /* العرض المناسب */
-  height: 200px;  /* الارتفاع ليصبح المربع متساوي الأبعاد */
-  object-fit: cover; /* لقص الصورة بشكل متناسق دون تشوه */
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* تأثير الحركة والتكبير عند مرور الماوس */
 .profile-img:hover {
-  transform: scale(1.08); /* تكبير خفيف عند اللمس */
-  box-shadow: 0 8px 16px rgba(213, 219, 55, 0.5); /* إضاءة خفيفة بلون الموقع */
+    transform: scale(1.08);
+    box-shadow: 0 8px 16px rgba(213, 219, 55, 0.5);
 }
 
-/* حاوية قسم معلومات عني لترتيب العناصر أفقياً */
 .about-flex-container {
-  display: flex;
-  align-items: center; /* محاذاة الصورة والنص في المنتصف عمودياً */
-  justify-content: center;
-  gap: 30px; /* المسافة بين النص والصورة */
-  flex-wrap: wrap; /* لكي تنزل الصورة أسفل النص تلقائياً في الشاشات الصغيرة جداً */
-  margin-top: 20px;
-  text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    text-align: right;
 }
 
-/* تنسيق حاوية النص */
 .about-text {
-  max-width: 600px;
+    max-width: 600px;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.education-list {
+    list-style-type: none;
+    padding: 0;
+    font-size: 18px;
+    line-height: 2;
+}
+
+.cv-btn {
+    color: rgb(213, 219, 55);
+    text-decoration: underline;
+}
+
+/* ==========================================
+   5. النماذج (نماذج التواصل والتعليقات)
+   ========================================== */
+.contact-section, 
+.article-section {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    text-align: right;
+}
+
+.contact-section form, 
+.article-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-section input,
+.contact-section textarea,
+.article-section input,
+.article-section textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.article-section textarea {
+    min-height: 100px;
+}
+
+.contact-section button[type="submit"],
+.article-section button[type="submit"] {
+    padding: 12px;
+    background-color: rgb(213, 219, 55);
+    color: rgb(7, 45, 52);
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* قسم المقال التجريبي والتعليقات */
+.article-box {
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.article-box p {
+    line-height: 1.8;
+    color: #ddd;
+}
+
+.form-field {
+    text-align: right;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.contact-inputs-group {
+    display: flex;
+    gap: 10px;
+}
+
+.error-message {
+    color: #ff6b6b;
+    display: none;
+}
+
+.comments-display-area {
+    max-width: 600px;
+    margin: 30px auto;
+    text-align: right;
+}
+
+.comment-card {
+    background: rgba(255,255,255,0.04);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: right;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: rgb(213, 219, 55);
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #aaa;
+    font-weight: normal;
+    margin-right: 10px;
+}
+
+.comment-body {
+    margin: 8px 0 0 0;
+    color: #eee;
+    font-size: 15px;
+}
+
+/* ==========================================
+   6. الفوتر والروابط
+   ========================================== */
+footer {
+    background-color: rgb(12, 16, 16);
+    padding: 15px;
+    text-align: center;
+    margin-top: 30px;
+    color: #fff;
+}
+
+footer hr {
+    border-color: #333;
+}
+
+footer a {
+    color: rgb(213, 219, 55);
+}
+
+.footer-rights {
+    color: rgb(204, 229, 14);
+    margin-top: 15px;
 }
