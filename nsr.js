@@ -1,21 +1,19 @@
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("تم تحميل ملف الجافا سكريبت بنجاح!");
+// ==========================================
+// 1. إدارة التنقل بين الأقسام (Tabs Navigation)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
 
-    // 1. إدارة التنقل بين الأقسام (Tabs)
-    const buttons = document.querySelectorAll('.nav-btn');
-    const contents = document.querySelectorAll('.tab-content');
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // إزالة حالة النشاط من جميع الأزرار والأقسام
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
 
-    buttons.forEach(button => {
-        button.addEventListener('click', function () {
-            // إزالة الكلاس active من كل الأزرار
-            buttons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-
-            // إخفاء كل الأقسام
-            contents.forEach(content => content.classList.remove('active'));
-
-            // إظهار القسم المستهدف
-            const targetId = this.getAttribute('data-target');
+            // تفعيل الزر والقسم المختار
+            button.classList.add('active');
+            const targetId = button.getAttribute('data-target');
             const targetContent = document.getElementById(targetId);
             
             if (targetContent) {
@@ -24,124 +22,141 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 2. تأثير تكبير الصورة الشخصية عند مرور الماوس
-    const profileImg = document.querySelector("main img");
-    if (profileImg) {
-        profileImg.style.transition = "transform 0.3s ease";
-        profileImg.addEventListener("mouseenter", () => profileImg.style.transform = "scale(1.05)");
-        profileImg.addEventListener("mouseleave", () => profileImg.style.transform = "scale(1)");
-    }
-
-    // ==========================================
-    // 3. إدارة قسم التعليقات عبر Supabase
-    // ==========================================
-    
-    // استبدل القيم ببيانات مشروعك من Supabase
-    const SUPABASE_URL = 'https://fdcedrgutajkmxfcsxqs.supabase.co/rest/v1/';
-    const SUPABASE_KEY = 'sb_publishable_gpMkwKPhftNkDhxexnKTZw_gj75W17p';
-    
-    // التأكد من وجود مكتبة Supabase قبل التشغيل
-    if (typeof supabase !== 'undefined') {
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        const postIdElem = document.getElementById('postId');
-
-        if (postIdElem) {
-            const currentPostId = postIdElem.value;
-
-            // دالة جلب وعرض التعليقات
-            async function loadComments() {
-                const commentsList = document.getElementById('commentsList');
-                if (!commentsList) return;
-
-                const { data, error } = await supabaseClient
-                    .from('comments')
-                    .select('name, comment, created_at')
-                    .eq('post_id', currentPostId)
-                    .order('created_at', { ascending: false });
-
-                if (error) {
-                    commentsList.innerHTML = '<p style="color: #ff6b6b;">حدث خطأ في تحميل التعليقات.</p>';
-                    return;
-                }
-
-                if (data.length === 0) {
-                    commentsList.innerHTML = '<p style="color: #aaa;">لا توجد تعليقات بعد. كن أول من يعلق!</p>';
-                    return;
-                }
-
-                commentsList.innerHTML = '';
-                data.forEach(c => {
-                    const date = new Date(c.created_at).toLocaleDateString('ar-EG');
-                    commentsList.innerHTML += `
-                        <div style="background: rgba(255,255,255,0.04); padding: 12px; margin-bottom: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); text-align: right;">
-                            <div style="font-weight: bold; color: rgb(213, 219, 55);">${escapeHtml(c.name)} <span style="font-size: 12px; color: #aaa; font-weight: normal; margin-right: 10px;">• ${date}</span></div>
-                            <p style="margin: 8px 0 0 0; color: #eee; font-size: 15px;">${escapeHtml(c.comment)}</p>
-                        </div>
-                    `;
-                });
-            }
-
-            // دالة التحقق من المدخلات وإرسال التعليق
-            const commentForm = document.getElementById('commentForm');
-            if (commentForm) {
-                commentForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-
-                    const name = document.getElementById('userName').value.trim();
-                    const email = document.getElementById('userEmail').value.trim();
-                    const phone = document.getElementById('userPhone').value.trim();
-                    const comment = document.getElementById('userComment').value.trim();
-
-                    // إخفاء تنبيهات الخطأ القديمة
-                    document.getElementById('nameError').style.display = 'none';
-                    document.getElementById('contactError').style.display = 'none';
-
-                    // الشرط الأول: الاسم 4 أحرف على الأقل
-                    if (name.length < 4) {
-                        document.getElementById('nameError').style.display = 'block';
-                        return;
-                    }
-
-                    // الشرط الثاني: إدخال إما البريد أو الهاتف وليس الاثنين
-                    const hasEmail = email !== "";
-                    const hasPhone = phone !== "";
-
-                    if ((hasEmail && hasPhone) || (!hasEmail && !hasPhone)) {
-                        document.getElementById('contactError').style.display = 'block';
-                        return;
-                    }
-
-                    // إرسال البيانات إلى Supabase
-                    const { error } = await supabaseClient
-                        .from('comments')
-                        .insert([
-                            { 
-                                name: name, 
-                                email: hasEmail ? email : null, 
-                                phone: hasPhone ? phone : null, 
-                                comment: comment, 
-                                post_id: currentPostId 
-                            }
-                        ]);
-
-                    if (error) {
-                        alert('حدث خطأ أثناء إرسال التعليق، حاول مرة أخرى.');
-                        console.error(error);
-                    } else {
-                        alert('تم نشر تعليقك بنجاح!');
-                        commentForm.reset();
-                        loadComments(); // تحديث القائمة مباشرة
-                    }
-                });
-            }
-
-            // حماية بسيطة لمنع ثغرات XSS
-            function escapeHtml(text) {
-                return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            }
-
-            // تحميل التعليقات فور فتح الصفحة
-            loadComments();
-        }
-    }
+    // تحميل التعليقات عند فتح الصفحة لأول مرة
+    loadComments();
 });
+
+// ==========================================
+// 2. إعدادات وقواعد اتصال Supabase
+// ==========================================
+// استبدل القيم أدناه ببيانات مشروعك الحقيقية من Supabase
+const SUPABASE_URL = 'ضع_رابط_مشروعك_هنا';      // مثال: 'https://xxxx.supabase.co'
+const SUPABASE_KEY = 'ضع_مفتاح_anon_key_هنا';  // المفتاح العام anon key
+
+// تهيئة عميل Supabase
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const currentPostId = 'article-1'; // معرف المقال الحالي
+
+// دالة لتنقية النصوص لحماية الموقع من الثغرات (XSS)
+function escapeHtml(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// ==========================================
+// 3. دالة جلب وعرض التعليقات من Supabase
+// ==========================================
+async function loadComments() {
+    const commentsList = document.getElementById('commentsList');
+    if (!commentsList) return;
+
+    // جلب التعليقات الخاصة بهذا المقال مرتبة من الأحدث إلى الأقدم
+    const { data, error } = await supabaseClient
+        .from('comments')
+        .select('*')
+        .eq('post_id', currentPostId)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('خطأ أثناء جلب التعليقات:', error);
+        commentsList.innerHTML = '<p style="color: #ff6b6b;">تعذر تحميل التعليقات حالياً.</p>';
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        commentsList.innerHTML = '<p style="color: #aaa;">لا توجد تعليقات بعد. كن أول من يعلق!</p>';
+        return;
+    }
+
+    // بناء قائمة التعليقات
+    let html = '';
+    data.forEach(item => {
+        const dateFormatted = new Date(item.created_at).toLocaleDateString('ar-EG', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+
+        html += `
+            <div class="comment-card">
+                <div>
+                    <span class="comment-author">${escapeHtml(item.name)}</span>
+                    <span class="comment-date">(${dateFormatted})</span>
+                </div>
+                <p class="comment-body">${escapeHtml(item.comment)}</p>
+            </div>
+        `;
+    });
+
+    commentsList.innerHTML = html;
+}
+
+// ==========================================
+// 4. دالة التحقق من المدخلات وإرسال التعليق
+// ==========================================
+const commentForm = document.getElementById('commentForm');
+if (commentForm) {
+    commentForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('userName').value.trim();
+        const contactValue = document.getElementById('userContact').value.trim();
+        const comment = document.getElementById('userComment').value.trim();
+        const welcomeMsg = document.getElementById('welcomeMessage');
+
+        // إخفاء تنبيهات الخطأ القديمة ورسالة الترحيب
+        const nameError = document.getElementById('nameError');
+        const contactError = document.getElementById('contactError');
+        
+        if (nameError) nameError.style.display = 'none';
+        if (contactError) contactError.style.display = 'none';
+        if (welcomeMsg) welcomeMsg.style.display = 'none';
+
+        // الشرط الأول: الاسم 4 أحرف على الأقل
+        if (name.length < 4) {
+            if (nameError) nameError.style.display = 'block';
+            return;
+        }
+
+        // الشرط الثاني: التحقق من أن حقل التواصل ليس فارغاً
+        if (contactValue === "") {
+            if (contactError) contactError.style.display = 'block';
+            return;
+        }
+
+        // التمييز تلقائياً: إذا احتوى النص على @ يُعتبر بريداً إلكترونياً، وإلا فهو رقم هاتف
+        const isEmail = contactValue.includes('@');
+
+        // إرسال البيانات إلى Supabase (باستخدام العمود Email بحرف E كبير)
+        const { error } = await supabaseClient
+            .from('comments')
+            .insert([
+                { 
+                    name: name, 
+                    Email: isEmail ? contactValue : null,
+                    phone: !isEmail ? contactValue : null, 
+                    comment: comment, 
+                    post_id: currentPostId 
+                }
+            ]);
+
+        if (error) {
+            alert('حدث خطأ أثناء إرسال التعليق، يرجى التأكد من البيانات والإعدادات.');
+            console.error('Supabase Insert Error:', error);
+        } else {
+            // إظهار رسالة ترحيب شخصية لطيفة للمستخدم
+            if (welcomeMsg) {
+                welcomeMsg.innerHTML = `مرحباً بك يا ${escapeHtml(name)}! تم نشر تعليقك بنجاح وشكراً لتفاعلك.`;
+                welcomeMsg.style.display = 'block';
+            }
+            
+            commentForm.reset();
+            loadComments(); // إعادة تحميل التعليقات لتظهر مباشرة في القائمة
+        }
+    });
+}
