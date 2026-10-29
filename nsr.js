@@ -29,9 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 // 2. إعدادات وقواعد اتصال Supabase
 // ==========================================
-// استبدل القيم أدناه ببيانات مشروعك الحقيقية من Supabase
-const SUPABASE_URL = 'ضع_رابط_مشروعك_هنا';      // مثال: 'https://xxxx.supabase.co'
-const SUPABASE_KEY = 'ضع_مفتاح_anon_key_هنا';  // المفتاح العام anon key
+const SUPABASE_URL = 'https://fdcedrgutajkmxfcsxqs.supabase.co';      
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkY2Vkcmd1dGFqa214ZmNzeHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyOTE4OTgsImV4cCI6MjEwODg2Nzg5OH0.0QURTvuYzaH3B0RNqnZ_kVDhva3mu67sMc-jbEBTQYI';  
 
 // تهيئة عميل Supabase
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -132,13 +131,13 @@ if (commentForm) {
         // التمييز تلقائياً: إذا احتوى النص على @ يُعتبر بريداً إلكترونياً، وإلا فهو رقم هاتف
         const isEmail = contactValue.includes('@');
 
-        // إرسال البيانات إلى Supabase (باستخدام العمود Email بحرف E كبير)
+        // إرسال البيانات إلى Supabase (باستخدام أعمدة بحروف صغيرة)
         const { error } = await supabaseClient
             .from('comments')
             .insert([
                 { 
                     name: name, 
-                    Email: isEmail ? contactValue : null,
+                    email: isEmail ? contactValue : null,
                     phone: !isEmail ? contactValue : null, 
                     comment: comment, 
                     post_id: currentPostId 
