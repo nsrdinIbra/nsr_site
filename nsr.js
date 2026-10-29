@@ -1,7 +1,9 @@
 // ==========================================
-// 1. إدارة التنقل بين الأقسام (Tabs Navigation)
+// تشغيل الكود بمجرد تحميل الصفحة بالكامل
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+
+    // 1. إدارة التنقل بين الأقسام (Tabs Navigation)
     const navButtons = document.querySelectorAll('.nav-btn');
     const tabContents = document.querySelectorAll('.tab-content');
 
@@ -24,10 +26,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // تحميل التعليقات عند فتح الصفحة لأول مرة
     loadComments();
+
+    // 2. إدارة التحقق وإرسال التعليق (داخل DOM علشان يشتغل بدون إعادة تحميل)
+    const commentForm = document.getElementById('commentForm');
+    if (commentForm) {
+        commentForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); // منع إعادة تحميل الصفحة نهائياً
+
+            const name = document.getElementById('userName').value.trim();
+            const contactValue = document.getElementById('userContact').value.trim();
+            const comment = document.getElementById('userComment').value.trim();
+            const welcomeMsg = document.getElementById('welcomeMessage');
+
+            // إخفاء تنبيهات الخطأ القديمة ورسالة الترحيب
+            const nameError = document.getElementById('nameError');
+            const contactError = document.getElementById('contactError');
+            
+            if (nameError) nameError.style.display = 'none';
+            if (contactError) contactError.style.display = 'none';
+            if (welcomeMsg) welcomeMsg.style.display = 'none';
+
+            // الشرط الأول: الاسم 4 أحرف على الأقل
+            if (name.length < 4) {
+                if (nameError) nameError.style.display = 'block';
+                return;
+            }
+
+            // الشرط الثاني: التحقق من أن حقل التواصل ليس فارغاً
+            if (contactValue === "") {
+                if (contactError) contactError.style.display = 'block';
+                return;
+            }
+
+            // التمييز تلقائياً: إذا احتوى النص على @ يُعتبر بريداً إلكترونياً، وإلا فهو رقم هاتف
+            const isEmail = contactValue.includes('@');
+
+            // إرسال البيانات إلى Supabase
+            const { error } = await supabaseClient
+                .from('comments')
+                .insert([
+                    { 
+                        name: name, 
+                        email: isEmail ? contactValue : null,
+                        phone: !isEmail ? contactValue : null, 
+                        comment: comment, 
+                        post_id: currentPostId 
+                    }
+                ]);
+
+            if (error) {
+                alert('حدث خطأ أثناء إرسال التعليق، يرجى التأكد من البيانات والإعدادات.');
+                console.error('Supabase Insert Error:', error);
+            } else {
+                // إظهار رسالة ترحيب شخصية لطيفة للمستخدم
+                if (welcomeMsg) {
+                    welcomeMsg.innerHTML = `مرحباً بك يا ${escapeHtml(name)}! تم نشر تعليقك بنجاح وشكراً لتفاعلك.`;
+                    welcomeMsg.style.display = 'block';
+                }
+                
+                commentForm.reset();
+                loadComments(); // إعادة تحميل التعليقات لتظهر مباشرة في القائمة دون مغادرة الصفحة
+            }
+        });
+    }
 });
 
 // ==========================================
-// 2. إعدادات وقواعد اتصال Supabase
+// 3. إعدادات واتصال Supabase والدوال المساعدة
 // ==========================================
 const SUPABASE_URL = 'https://fdcedrgutajkmxfcsxqs.supabase.co';      
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkY2Vkcmd1dGFqa214ZmNzeHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyOTE4OTgsImV4cCI6MjEwODg2Nzg5OH0.0QURTvuYzaH3B0RNqnZ_kVDhva3mu67sMc-jbEBTQYI';  
@@ -48,13 +113,12 @@ function escapeHtml(text) {
 }
 
 // ==========================================
-// 3. دالة جلب وعرض التعليقات من Supabase
+// 4. دالة جلب وعرض التعليقات من Supabase
 // ==========================================
 async function loadComments() {
     const commentsList = document.getElementById('commentsList');
     if (!commentsList) return;
 
-    // جلب التعليقات الخاصة بهذا المقال مرتبة من الأحدث إلى الأقدم
     const { data, error } = await supabaseClient
         .from('comments')
         .select('*')
@@ -72,7 +136,6 @@ async function loadComments() {
         return;
     }
 
-    // بناء قائمة التعليقات
     let html = '';
     data.forEach(item => {
         const dateFormatted = new Date(item.created_at).toLocaleDateString('ar-EG', {
@@ -93,69 +156,4 @@ async function loadComments() {
     });
 
     commentsList.innerHTML = html;
-}
-
-// ==========================================
-// 4. دالة التحقق من المدخلات وإرسال التعليق
-// ==========================================
-const commentForm = document.getElementById('commentForm');
-if (commentForm) {
-    commentForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const name = document.getElementById('userName').value.trim();
-        const contactValue = document.getElementById('userContact').value.trim();
-        const comment = document.getElementById('userComment').value.trim();
-        const welcomeMsg = document.getElementById('welcomeMessage');
-
-        // إخفاء تنبيهات الخطأ القديمة ورسالة الترحيب
-        const nameError = document.getElementById('nameError');
-        const contactError = document.getElementById('contactError');
-        
-        if (nameError) nameError.style.display = 'none';
-        if (contactError) contactError.style.display = 'none';
-        if (welcomeMsg) welcomeMsg.style.display = 'none';
-
-        // الشرط الأول: الاسم 4 أحرف على الأقل
-        if (name.length < 4) {
-            if (nameError) nameError.style.display = 'block';
-            return;
-        }
-
-        // الشرط الثاني: التحقق من أن حقل التواصل ليس فارغاً
-        if (contactValue === "") {
-            if (contactError) contactError.style.display = 'block';
-            return;
-        }
-
-        // التمييز تلقائياً: إذا احتوى النص على @ يُعتبر بريداً إلكترونياً، وإلا فهو رقم هاتف
-        const isEmail = contactValue.includes('@');
-
-        // إرسال البيانات إلى Supabase (باستخدام أعمدة بحروف صغيرة)
-        const { error } = await supabaseClient
-            .from('comments')
-            .insert([
-                { 
-                    name: name, 
-                    email: isEmail ? contactValue : null,
-                    phone: !isEmail ? contactValue : null, 
-                    comment: comment, 
-                    post_id: currentPostId 
-                }
-            ]);
-
-        if (error) {
-            alert('حدث خطأ أثناء إرسال التعليق، يرجى التأكد من البيانات والإعدادات.');
-            console.error('Supabase Insert Error:', error);
-        } else {
-            // إظهار رسالة ترحيب شخصية لطيفة للمستخدم
-            if (welcomeMsg) {
-                welcomeMsg.innerHTML = `مرحباً بك يا ${escapeHtml(name)}! تم نشر تعليقك بنجاح وشكراً لتفاعلك.`;
-                welcomeMsg.style.display = 'block';
-            }
-            
-            commentForm.reset();
-            loadComments(); // إعادة تحميل التعليقات لتظهر مباشرة في القائمة
-        }
-    });
 }
