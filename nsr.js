@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==========================================
     
     // استبدل القيم ببيانات مشروعك من Supabase
-    const SUPABASE_URL = 'ضع_رابط_مشروعك_هنا';
-    const SUPABASE_KEY = 'ضع_مفتاح_anon_key_هنا';
+    const SUPABASE_URL = 'https://fdcedrgutajkmxfcsxqs.supabase.co/rest/v1/';
+    const SUPABASE_KEY = 'sb_publishable_gpMkwKPhftNkDhxexnKTZw_gj75W17p';
     
     // التأكد من وجود مكتبة Supabase قبل التشغيل
     if (typeof supabase !== 'undefined') {
