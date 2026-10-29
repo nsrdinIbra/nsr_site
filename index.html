@@ -4,84 +4,18 @@
   <meta name="google-site-verification" content="JizxLbfHzecHTpQQ6cZREh0SapJ5_kfy2B8Xc5GBf04" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
-  <title>مهندس. نصرالدين ابراهيم بلولة  " ابو اواب</title>
-  <meta name="google-site-verification" content="نصرالدين ابراهيم محمد بلولة" />
-  
+  <title>نصرالدين ابراهيم محمد بلولة" ابو اواب</title>
+
+  <!-- ربط ملف التنسيقات الموحد -->
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* تنسيقات سريعة للأقسام والأزرار */
-    .tab-content {
-      display: none; /* إخفاء الأقسام افتراضياً */
-      padding: 20px;
-      color: white;
-    }
-    .tab-content.active {
-      display: block; /* إظهار القسم النشط فقط */
-    }
-    .nav-btn {
-      background-color: transparent;
-      color: rgb(213, 223, 23);
-      border: 1px solid rgb(213, 223, 23);
-      padding: 8px 15px;
-      margin: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 5px;
-      transition: 0.3s;
-    }
-    .nav-btn.active, .nav-btn:hover {
-      background-color: rgb(213, 219, 55);
-      color: rgb(7, 45, 52);
-    }
-    /* تنسيق نموذج التواصل والتعليقات */
-    .contact-section, .article-section {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      text-align: right;
-    }
-    .contact-section form, .article-section form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .contact-section input,
-    .contact-section textarea,
-    .article-section input,
-    .article-section textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    .article-section textarea {
-      min-height: 100px;
-    }
-    .contact-section button[type="submit"],
-    .article-section button[type="submit"] {
-      padding: 12px;
-      background-color: rgb(213, 219, 55);
-      color: rgb(7, 45, 52);
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
 </head>
 
-<body style="background-color: rgb(7, 45, 52);">
+<body>
 
-  <header style="background-color: rgb(31, 23, 28); padding: 15px; text-align: center;">
-    <p style="color: #fff; margin: 0 0 10px 0;">بسم الله الرحمن الرحيم</p>
-    <h1 style="color: rgb(213, 219, 55); margin: 0 0 15px 0;">zoal 3almy زول عالمي</h1>
+  <header>
+    <p>بسم الله الرحمن الرحيم</p>
+    <h1>zoal 3almy زول عالمي</h1>
     
-    <!-- الأزرار (تمت إضافة زر المقالات) -->
     <nav>
       <button class="nav-btn active" data-target="home">الرئيسية</button>
       <button class="nav-btn" data-target="articles">المقالات</button>
@@ -91,7 +25,7 @@
     </nav>
   </header>
 
-  <main style="text-align: center; min-height: 400px;">
+  <main>
     
     <div class="video-container">
         <h2>حبابكم عشرة بلا كشرة</h2>
@@ -107,7 +41,7 @@
         </iframe>
     </div>
   
-    <!-- القسم الأول: الرئيسية -->
+    <!-- 1. الرئيسية -->
     <div id="home" class="tab-content active">
       <div class="images-container">
         <img src="ns1.jpg" alt="الصورة الأولى" class="profile-img">
@@ -116,43 +50,40 @@
       </div>
     </div>
 
-    <!-- القسم الجديد: المقالات والتعليقات -->
+    <!-- 2. المقالات والتعليقات -->
     <div id="articles" class="tab-content">
       <h2>قسم المقالات</h2>
-      <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: right;">
+      
+      <div class="article-box">
         <h3>عنوان المقال التجريبي: أهمية التقنية وتطوير الويب في عصرنا</h3>
-        <p style="line-height: 1.8; color: #ddd;">
+        <p>
           هذا نص تجريبي لمقالك الأول. يمكنك قراءة المقال والاستمتاع بمحتواه التقني، وإذا أردت مشاركة رأيك، يمكنك كتابة تعليقك في الأسفل مع إدخال اسمك ووسيلة تواصل واحدة فقط (البريد الإلكتروني أو رقم الهاتف).
         </p>
       </div>
 
-      <!-- نموذج التعليقات -->
+      <!-- نموذج كتابة التعليق -->
       <div class="article-section">
         <h3>اضف تعليقاً على المقال</h3>
         <form id="commentForm">
-          <!-- معرف المقال -->
           <input type="hidden" id="postId" value="article-1">
 
-          <!-- الاسم (4 أحرف فأكثر) -->
-          <div style="text-align: right;">
-            <label style="display:block; margin-bottom: 5px; font-size: 14px;">الاسم الكامل * (4 أحرف على الأقل):</label>
+          <div class="form-field">
+            <label>الاسم الكامل * (4 أحرف على الأقل):</label>
             <input type="text" id="userName" required placeholder="أدخل اسمك">
-            <small id="nameError" style="color: #ff6b6b; display: none;">الاسم يجب ألا يقل عن 4 أحرف.</small>
+            <small id="nameError" class="error-message">الاسم يجب ألا يقل عن 4 أحرف.</small>
           </div>
 
-          <!-- الإيميل أو الهاتف (أحدهما فقط) -->
-          <div style="text-align: right;">
-            <label style="display:block; margin-bottom: 5px; font-size: 14px;">وسيلة التواصل * (أدخل إما إيميلك أو هاتفك وليس كلاهما):</label>
-            <div style="display: flex; gap: 10px;">
+          <div class="form-field">
+            <label>وسيلة التواصل * (أدخل إما إيميلك أو هاتفك وليس كلاهما):</label>
+            <div class="contact-inputs-group">
               <input type="email" id="userEmail" placeholder="البريد الإلكتروني">
               <input type="tel" id="userPhone" placeholder="رقم الهاتف">
             </div>
-            <small id="contactError" style="color: #ff6b6b; display: none;">الرجاء إدخال إما البريد أو الهاتف (وليس الاثنين معاً).</small>
+            <small id="contactError" class="error-message">الرجاء إدخال إما البريد أو الهاتف (وليس الاثنين معاً).</small>
           </div>
 
-          <!-- التعليق -->
-          <div style="text-align: right;">
-            <label style="display:block; margin-bottom: 5px; font-size: 14px;">التعليق *:</label>
+          <div class="form-field">
+            <label>التعليق *:</label>
             <textarea id="userComment" required placeholder="اكتب تعليقك هنا..."></textarea>
           </div>
 
@@ -160,47 +91,49 @@
         </form>
       </div>
 
-      <!-- عرض التعليقات للجمهور -->
-      <div style="max-width: 600px; margin: 30px auto; text-align: right;">
+      <!-- قائمة عرض التعليقات -->
+      <div class="comments-display-area">
         <h3>التعليقات المنشورة</h3>
-        <div id="commentsList" style="margin-top: 15px;">
+        <div id="commentsList">
           <p style="color: #aaa;">جاري تحميل التعليقات...</p>
         </div>
       </div>
     </div>
 
-    <!-- القسم الثاني: عني -->
+    <!-- 3. عني -->
     <div id="about" class="tab-content">
       <h2>معلومات عني</h2>
-      <p style="font-size: 18px; line-height: 1.8;">
-        أنا نصر الدين إبراهيم محمد بلولة، مهندس برمجيات ومتخصص في الدعم التقني وفني حاسوب.<br>
-        مهتم بتعلم وتعليم لغات البرمجة ومتخصص في تطوير صفحات الويب
-      </p>
-      <img src="ns6.jpg" alt="الصورة الرابعة" class="profile-img">
+      <div class="about-flex-container">
+        <p class="about-text">
+          أنا نصر الدين إبراهيم محمد بلولة، مهندس برمجيات ومتخصص في الدعم التقني وفني حاسوب.<br>
+          مهتم بتعلم وتعليم لغات البرمجة ومتخصص في تطوير صفحات الويب
+        </p>
+        <img src="ns6.jpg" alt="الصورة الرابعة" class="profile-img">
+      </div>
     </div>
 
-    <!-- القسم الثالث: التعليم والمهارات -->
+    <!-- 4. التعليم والمهارات -->
     <div id="education" class="tab-content">
       <h2>التعليم والمهارات</h2>
-      <ul style="list-style-type: none; padding: 0; font-size: 18px; line-height: 2;">
+      <ul class="education-list">
         <li>درست مرحلة الاساس بمدرسة الصاحبين في سوبا</li>
         <li>مرحلة الثانوية بمدرسة الخرطوم القديمة النموذجية</li>
         <li>🎓 بكالوريوس علوم الحاسوب جامعة بحري</li>
         <li>💻 الصيانة البرمجية وتطوير الأنظمة</li>
         <br>
         <li>
-          <a href="cv.pdf" target="_blank" class="cv-btn" style="color: rgb(213, 219, 55); text-decoration: underline;">
+          <a href="cv.pdf" target="_blank" class="cv-btn">
             📄 تحميل / عرض السيرة الذاتية (PDF)
           </a>
         </li>
       </ul>
     </div>
 
-    <!-- القسم الرابع: التواصل -->
+    <!-- 5. التواصل -->
     <div id="contact" class="tab-content">
       <h2>تواصل معي</h2>
       <p>يمكنك التواصل معي مباشرة عبر البريد الإلكتروني أو من خلال النموذج أدناه:</p>
-      <p><a href="mailto:nasrbalola03@gmail.com" style="color: rgb(213, 219, 55);">nasrbalola03@gmail.com</a></p>
+      <p><a href="mailto:nasrbalola03@gmail.com" class="cv-btn">nasrbalola03@gmail.com</a></p>
 
       <section class="contact-section">
         <form action="https://api.web3forms.com/submit" method="POST">
@@ -215,121 +148,22 @@
 
   </main>
 
-  <footer style="background-color: rgb(12, 16, 16); padding: 15px; text-align: center; margin-top: 30px; color: #fff;">
-    <hr style="border-color: #333;">
-    <a href="https://www.facebook.com/nsrblola" target="_blank" title="my facebook" style="color: rgb(213, 219, 55);">صفحتي على الفيسبوك</a> <br><br>
-    <a href="https://www.youtube.com/@NasreldinBlola" target="_blank" title="my youtube channel" style="color: rgb(213, 219, 55);">قناتي على اليوتيوب</a> <br><br>
-    <a href="https://www.blogger.com/blog/posts/6119901390349077400?bpli=1&pli=1" target="_blank" title="my blogger" style="color: rgb(213, 219, 55);">صفحتي على بلوقر</a> <br><br>
-    <a href="https://www.linkedin.com/in/nasr-eldin-ibrahim-mohamed-blola-740b6984/?isSelfProfile=true" target="_blank" title="my linkedin" style="color: rgb(213, 219, 55);">صفحتي على لنكد إن</a>
-    <p style="color: rgb(204, 229, 14); margin-top: 15px;">
+  <footer>
+    <hr>
+    <a href="https://www.facebook.com/nsrblola" target="_blank" title="my facebook">صفحتي على الفيسبوك</a> <br><br>
+    <a href="https://www.youtube.com/@NasreldinBlola" target="_blank" title="my youtube channel">قناتي على اليوتيوب</a> <br><br>
+    <a href="https://www.blogger.com/blog/posts/6119901390349077400?bpli=1&pli=1" target="_blank" title="my blogger">صفحتي على بلوقر</a> <br><br>
+    <a href="https://www.linkedin.com/in/nasr-eldin-ibrahim-mohamed-blola-740b6984/?isSelfProfile=true" target="_blank" title="my linkedin">صفحتي على لنكد إن</a>
+    
+    <p class="footer-rights">
       Author: Nasreldin Ibrahim Mohamed<br>
       &copy; Rights reserved حقوق النشر محفوظة
     </p>
   </footer>
 
-  <!-- استدعاء مكتبة Supabase -->
+  <!-- مكتبة Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    // 1. ربط الموقع بـ Supabase (ضع بياناتك هنا)
-    const SUPABASE_URL = 'ضع_رابط_مشروعك_هنا';
-    const SUPABASE_KEY = 'ضع_مفتاح_anon_key_هنا';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    const currentPostId = document.getElementById('postId').value;
-
-    // 2. جلب وعرض التعليقات
-    async function loadComments() {
-      const commentsList = document.getElementById('commentsList');
-      
-      const { data, error } = await supabaseClient
-        .from('comments')
-        .select('name, comment, created_at')
-        .eq('post_id', currentPostId)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        commentsList.innerHTML = '<p style="color: red;">حدث خطأ في تحميل التعليقات.</p>';
-        return;
-      }
-
-      if (data.length === 0) {
-        commentsList.innerHTML = '<p style="color: #777;">لا توجد تعليقات بعد. كن أول من يعلق!</p>';
-        return;
-      }
-
-      commentsList.innerHTML = '';
-      data.forEach(c => {
-        const date = new Date(c.created_at).toLocaleDateString('ar-EG');
-        commentsList.innerHTML += `
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; margin-bottom: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
-            <div style="font-weight: bold; color: rgb(213, 219, 55);">${escapeHtml(c.name)} <span style="font-size: 12px; color: #aaa; font-weight: normal; margin-right: 10px;">• ${date}</span></div>
-            <p style="margin: 8px 0 0 0; color: #eee; font-size: 15px;">${escapeHtml(c.comment)}</p>
-          </div>
-        `;
-      });
-    }
-
-    // 3. التحقق وإرسال التعليق
-    document.getElementById('commentForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const name = document.getElementById('userName').value.trim();
-      const email = document.getElementById('userEmail').value.trim();
-      const phone = document.getElementById('userPhone').value.trim();
-      const comment = document.getElementById('userComment').value.trim();
-
-      // إخفاء الأخطاء السابقة
-      document.getElementById('nameError').style.display = 'none';
-      document.getElementById('contactError').style.display = 'none';
-
-      // شرط الاسم: ألا يقل عن 4 أحرف
-      if (name.length < 4) {
-        document.getElementById('nameError').style.display = 'block';
-        return;
-      }
-
-      // شرط التواصل: إدخال أحدهما فقط (إيميل أو هاتف)
-      const hasEmail = email !== "";
-      const hasPhone = phone !== "";
-
-      if ((hasEmail && hasPhone) || (!hasEmail && !hasPhone)) {
-        document.getElementById('contactError').style.display = 'block';
-        return;
-      }
-
-      // إرسال البيانات لقاعدة البيانات
-      const { error } = await supabaseClient
-        .from('comments')
-        .insert([
-          { 
-            name: name, 
-            email: hasEmail ? email : null, 
-            phone: hasPhone ? phone : null, 
-            comment: comment, 
-            post_id: currentPostId 
-          }
-        ]);
-
-      if (error) {
-        alert('حدث خطأ أثناء إرسال التعليق، حاول مرة أخرى.');
-        console.error(error);
-      } else {
-        alert('تم نشر تعليقك بنجاح!');
-        document.getElementById('commentForm').reset();
-        loadComments(); // إعادة تحميل التعليقات لتظهر فوراً
-      }
-    });
-
-    function escapeHtml(text) {
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
-    // تشغيل جلب التعليقات عند فتح الصفحة
-    loadComments();
-  </script>
-
-  <!-- ربط ملف الجافا سكريبت الأصلي الخاص بك -->
+  <!-- ملف الجافاسكريبت الخاص بك -->
   <script src="nsr.js"></script>
 </body>
 </html>
