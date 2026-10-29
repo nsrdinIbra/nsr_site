@@ -1,170 +1,162 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta name="google-site-verification" content="JizxLbfHzecHTpQQ6cZREh0SapJ5_kfy2B8Xc5GBf04" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-  <title>نصرالدين ابراهيم محمد بلولة" ابو اواب</title>
+// ==========================================
+// 1. إدارة التنقل بين الأقسام (Tabs Navigation)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
 
-  <!-- ربط ملف التنسيقات الموحد -->
-  <link rel="stylesheet" href="style.css">
-</head>
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // إزالة حالة النشاط من جميع الأزرار والأقسام
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
 
-<body>
+            // تفعيل الزر والقسم المختار
+            button.classList.add('active');
+            const targetId = button.getAttribute('data-target');
+            const targetContent = document.getElementById(targetId);
+            
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
 
-  <header>
-    <p>بسم الله الرحمن الرحيم</p>
-    <h1>zoal 3almy زول عالمي</h1>
-    
-    <nav>
-      <button class="nav-btn active" data-target="home">الرئيسية</button>
-      <button class="nav-btn" data-target="articles">المقالات</button>
-      <button class="nav-btn" data-target="about">عني (معلومات عني)</button>
-      <button class="nav-btn" data-target="education">التعليم والمهارات</button>
-      <button class="nav-btn" data-target="contact">التواصل</button>
-    </nav>
-  </header>
+    // تحميل التعليقات عند فتح الصفحة لأول مرة
+    loadComments();
+});
 
-  <main>
-    
-    <div class="video-container">
-        <h2>حبابكم عشرة بلا كشرة</h2>
-        <h3>تلاوة خاشعة</h3>
-        <iframe 
-          width="100%" 
-          height="315" 
-          src="https://www.youtube.com/embed/mkaevD14ayk" 
-          title="انس الغامدي - مجموعة من اجمل التلاوات" 
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen>
-        </iframe>
-    </div>
-  
-    <!-- 1. الرئيسية -->
-    <div id="home" class="tab-content active">
-      <div class="images-container">
-        <img src="ns1.jpg" alt="الصورة الأولى" class="profile-img">
-        <img src="zol.jpeg" alt="الصورة الشخصية" class="profile-img">
-        <img src="ns5.jpeg" alt="الصورة الثالثة" class="profile-img">
-      </div>
-    </div>
+// ==========================================
+// 2. إعدادات وقواعد اتصال Supabase
+// ==========================================
+// استبدل القيم أدناه ببيانات مشروعك الحقيقية من Supabase
+const SUPABASE_URL = 'ضع_رابط_مشروعك_هنا';      // مثال: 'https://xxxx.supabase.co'
+const SUPABASE_KEY = 'ضع_مفتاح_anon_key_هنا';  // المفتاح العام anon key
 
-    <!-- 2. المقالات والتعليقات -->
-    <div id="articles" class="tab-content">
-      <h2>قسم المقالات</h2>
-      
-      <div class="article-box">
-        <h3>عنوان المقال التجريبي: أهمية التقنية وتطوير الويب في عصرنا</h3>
-        <p>
-          هذا نص تجريبي لمقالك الأول. يمكنك قراءة المقال والاستمتاع بمحتواه التقني، وإذا أردت مشاركة رأيك، يمكنك كتابة تعليقك في الأسفل مع إدخال اسمك ووسيلة تواصل واحدة فقط (البريد الإلكتروني أو رقم الهاتف).
-        </p>
-      </div>
+// تهيئة عميل Supabase
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const currentPostId = 'article-1'; // معرف المقال الحالي
 
-      <!-- نموذج كتابة التعليق -->
-      <div class="article-section">
-        <h3>اضف تعليقاً على المقال</h3>
-        <form id="commentForm">
-          <input type="hidden" id="postId" value="article-1">
+// دالة لتنقية النصوص لحماية الموقع من الثغرات (XSS)
+function escapeHtml(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
-          <div class="form-field">
-            <label>الاسم الكامل * (4 أحرف على الأقل):</label>
-            <input type="text" id="userName" required placeholder="أدخل اسمك">
-            <small id="nameError" class="error-message">الاسم يجب ألا يقل عن 4 أحرف.</small>
-          </div>
+// ==========================================
+// 3. دالة جلب وعرض التعليقات من Supabase
+// ==========================================
+async function loadComments() {
+    const commentsList = document.getElementById('commentsList');
+    if (!commentsList) return;
 
-          <div class="form-field">
-            <label>وسيلة التواصل * (أدخل إما إيميلك أو هاتفك وليس كلاهما):</label>
-            <div class="contact-inputs-group">
-              <input type="email" id="userEmail" placeholder="البريد الإلكتروني">
-              <input type="tel" id="userPhone" placeholder="رقم الهاتف">
+    // جلب التعليقات الخاصة بهذا المقال مرتبة من الأحدث إلى الأقدم
+    const { data, error } = await supabaseClient
+        .from('comments')
+        .select('*')
+        .eq('post_id', currentPostId)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('خطأ أثناء جلب التعليقات:', error);
+        commentsList.innerHTML = '<p style="color: #ff6b6b;">تعذر تحميل التعليقات حالياً.</p>';
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        commentsList.innerHTML = '<p style="color: #aaa;">لا توجد تعليقات بعد. كن أول من يعلق!</p>';
+        return;
+    }
+
+    // بناء قائمة التعليقات
+    let html = '';
+    data.forEach(item => {
+        const dateFormatted = new Date(item.created_at).toLocaleDateString('ar-EG', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+
+        html += `
+            <div class="comment-card">
+                <div>
+                    <span class="comment-author">${escapeHtml(item.name)}</span>
+                    <span class="comment-date">(${dateFormatted})</span>
+                </div>
+                <p class="comment-body">${escapeHtml(item.comment)}</p>
             </div>
-            <small id="contactError" class="error-message">الرجاء إدخال إما البريد أو الهاتف (وليس الاثنين معاً).</small>
-          </div>
+        `;
+    });
 
-          <div class="form-field">
-            <label>التعليق *:</label>
-            <textarea id="userComment" required placeholder="اكتب تعليقك هنا..."></textarea>
-          </div>
+    commentsList.innerHTML = html;
+}
 
-          <button type="submit">إرسال التعليق</button>
-          <div id="welcomeMessage" style="color: rgb(213, 219, 55); font-weight: bold; margin-top: 10px; display: none;"></div>
-        </form>
-      </div>
+// ==========================================
+// 4. دالة التحقق من المدخلات وإرسال التعليق
+// ==========================================
+const commentForm = document.getElementById('commentForm');
+if (commentForm) {
+    commentForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-      <!-- قائمة عرض التعليقات -->
-      <div class="comments-display-area">
-        <h3>التعليقات المنشورة</h3>
-        <div id="commentsList">
-          <p style="color: #aaa;">جاري تحميل التعليقات...</p>
-        </div>
-      </div>
-    </div>
+        const name = document.getElementById('userName').value.trim();
+        const contactValue = document.getElementById('userContact').value.trim();
+        const comment = document.getElementById('userComment').value.trim();
+        const welcomeMsg = document.getElementById('welcomeMessage');
 
-    <!-- 3. عني -->
-    <div id="about" class="tab-content">
-      <h2>معلومات عني</h2>
-      <div class="about-flex-container">
-        <p class="about-text">
-          أنا نصر الدين إبراهيم محمد بلولة، مهندس برمجيات ومتخصص في الدعم التقني وفني حاسوب.<br>
-          مهتم بتعلم وتعليم لغات البرمجة ومتخصص في تطوير صفحات الويب
-        </p>
-        <img src="ns6.jpg" alt="الصورة الرابعة" class="profile-img">
-      </div>
-    </div>
+        // إخفاء تنبيهات الخطأ القديمة ورسالة الترحيب
+        const nameError = document.getElementById('nameError');
+        const contactError = document.getElementById('contactError');
+        
+        if (nameError) nameError.style.display = 'none';
+        if (contactError) contactError.style.display = 'none';
+        if (welcomeMsg) welcomeMsg.style.display = 'none';
 
-    <!-- 4. التعليم والمهارات -->
-    <div id="education" class="tab-content">
-      <h2>التعليم والمهارات</h2>
-      <ul class="education-list">
-        <li>درست مرحلة الاساس بمدرسة الصاحبين في سوبا</li>
-        <li>مرحلة الثانوية بمدرسة الخرطوم القديمة النموذجية</li>
-        <li>🎓 بكالوريوس علوم الحاسوب جامعة بحري</li>
-        <li>💻 الصيانة البرمجية وتطوير الأنظمة</li>
-        <br>
-        <li>
-          <a href="cv.pdf" target="_blank" class="cv-btn">
-            📄 تحميل / عرض السيرة الذاتية (PDF)
-          </a>
-        </li>
-      </ul>
-    </div>
+        // الشرط الأول: الاسم 4 أحرف على الأقل
+        if (name.length < 4) {
+            if (nameError) nameError.style.display = 'block';
+            return;
+        }
 
-    <!-- 5. التواصل -->
-    <div id="contact" class="tab-content">
-      <h2>تواصل معي</h2>
-      <p>يمكنك التواصل معي مباشرة عبر البريد الإلكتروني أو من خلال النموذج أدناه:</p>
-      <p><a href="mailto:nasrbalola03@gmail.com" class="cv-btn">nasrbalola03@gmail.com</a></p>
+        // الشرط الثاني: التحقق من أن حقل التواصل ليس فارغاً
+        if (contactValue === "") {
+            if (contactError) contactError.style.display = 'block';
+            return;
+        }
 
-      <section class="contact-section">
-        <form action="https://api.web3forms.com/submit" method="POST">
-            <input type="hidden" name="access_key" value="23260462-fe4b-482d-baf4-7a5749f12367">
-            <input type="text" name="name" placeholder="الاسم الكامل" required>
-            <input type="email" name="email" placeholder="البريد الإلكتروني" required>
-            <textarea name="message" placeholder="اكتب رسالتك هنا..." required></textarea>
-            <button type="submit">إرسال الرسالة</button>
-        </form>
-      </section>
-    </div>
+        // التمييز تلقائياً: إذا احتوى النص على @ يُعتبر بريداً إلكترونياً، وإلا فهو رقم هاتف
+        const isEmail = contactValue.includes('@');
 
-  </main>
+        // إرسال البيانات إلى Supabase (باستخدام العمود Email بحرف E كبير)
+        const { error } = await supabaseClient
+            .from('comments')
+            .insert([
+                { 
+                    name: name, 
+                    Email: isEmail ? contactValue : null,
+                    phone: !isEmail ? contactValue : null, 
+                    comment: comment, 
+                    post_id: currentPostId 
+                }
+            ]);
 
-  <footer>
-    <hr>
-    <a href="https://www.facebook.com/nsrblola" target="_blank" title="my facebook">صفحتي على الفيسبوك</a> <br><br>
-    <a href="https://www.youtube.com/@NasreldinBlola" target="_blank" title="my youtube channel">قناتي على اليوتيوب</a> <br><br>
-    <a href="https://www.blogger.com/blog/posts/6119901390349077400?bpli=1&pli=1" target="_blank" title="my blogger">صفحتي على بلوقر</a> <br><br>
-    <a href="https://www.linkedin.com/in/nasr-eldin-ibrahim-mohamed-blola-740b6984/?isSelfProfile=true" target="_blank" title="my linkedin">صفحتي على لنكد إن</a>
-    
-    <p class="footer-rights">
-      Author: Nasreldin Ibrahim Mohamed<br>
-      &copy; Rights reserved حقوق النشر محفوظة
-    </p>
-  </footer>
-
-  <!-- مكتبة Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- ملف الجافاسكريبت الخاص بك -->
-  <script src="nsr.js"></script>
-</body>
-</html>
+        if (error) {
+            alert('حدث خطأ أثناء إرسال التعليق، يرجى التأكد من البيانات والإعدادات.');
+            console.error('Supabase Insert Error:', error);
+        } else {
+            // إظهار رسالة ترحيب شخصية لطيفة للمستخدم
+            if (welcomeMsg) {
+                welcomeMsg.innerHTML = `مرحباً بك يا ${escapeHtml(name)}! تم نشر تعليقك بنجاح وشكراً لتفاعلك.`;
+                welcomeMsg.style.display = 'block';
+            }
+            
+            commentForm.reset();
+            loadComments(); // إعادة تحميل التعليقات لتظهر مباشرة في القائمة
+        }
+    });
+}
