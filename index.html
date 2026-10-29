@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
   <meta name="google-site-verification" content="JizxLbfHzecHTpQQ6cZREh0SapJ5_kfy2B8Xc5GBf04" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
-
-  <title>نصرالدين ابراهيم محمد بلولة" ابو اواب</title>‎
-<meta name="google-site-verification" content="نصرالدين ابراهيم محمد بلولة" />
-</head>
-
+  <title>مهندس. نصرالدين ابراهيم بلولة  " ابو اواب</title>
+  <meta name="google-site-verification" content="نصرالدين ابراهيم محمد بلولة" />
+  
   <link rel="stylesheet" href="style.css">
   <style>
     /* تنسيقات سريعة للأقسام والأزرار */
@@ -37,8 +33,8 @@
       background-color: rgb(213, 219, 55);
       color: rgb(7, 45, 52);
     }
-    /* تنسيق نموذج التواصل داخل القسم */
-    .contact-section {
+    /* تنسيق نموذج التواصل والتعليقات */
+    .contact-section, .article-section {
       max-width: 600px;
       margin: 20px auto;
       padding: 20px;
@@ -46,13 +42,15 @@
       border-radius: 12px;
       text-align: right;
     }
-    .contact-section form {
+    .contact-section form, .article-section form {
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
     .contact-section input,
-    .contact-section textarea {
+    .contact-section textarea,
+    .article-section input,
+    .article-section textarea {
       width: 100%;
       padding: 12px;
       border: 1px solid #ccc;
@@ -60,10 +58,11 @@
       font-size: 16px;
       box-sizing: border-box;
     }
-    .contact-section textarea {
-      min-height: 120px;
+    .article-section textarea {
+      min-height: 100px;
     }
-    .contact-section button[type="submit"] {
+    .contact-section button[type="submit"],
+    .article-section button[type="submit"] {
       padding: 12px;
       background-color: rgb(213, 219, 55);
       color: rgb(7, 45, 52);
@@ -78,15 +77,14 @@
 
 <body style="background-color: rgb(7, 45, 52);">
 
-  
-
   <header style="background-color: rgb(31, 23, 28); padding: 15px; text-align: center;">
     <p style="color: #fff; margin: 0 0 10px 0;">بسم الله الرحمن الرحيم</p>
     <h1 style="color: rgb(213, 219, 55); margin: 0 0 15px 0;">zoal 3almy زول عالمي</h1>
     
-    <!-- الأزرار الأربعة -->
+    <!-- الأزرار (تمت إضافة زر المقالات) -->
     <nav>
       <button class="nav-btn active" data-target="home">الرئيسية</button>
+      <button class="nav-btn" data-target="articles">المقالات</button>
       <button class="nav-btn" data-target="about">عني (معلومات عني)</button>
       <button class="nav-btn" data-target="education">التعليم والمهارات</button>
       <button class="nav-btn" data-target="contact">التواصل</button>
@@ -107,15 +105,67 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
           allowfullscreen>
         </iframe>
-      </div>
-    
+    </div>
+  
     <!-- القسم الأول: الرئيسية -->
     <div id="home" class="tab-content active">
-     
       <div class="images-container">
         <img src="ns1.jpg" alt="الصورة الأولى" class="profile-img">
         <img src="zol.jpeg" alt="الصورة الشخصية" class="profile-img">
         <img src="ns5.jpeg" alt="الصورة الثالثة" class="profile-img">
+      </div>
+    </div>
+
+    <!-- القسم الجديد: المقالات والتعليقات -->
+    <div id="articles" class="tab-content">
+      <h2>قسم المقالات</h2>
+      <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: right;">
+        <h3>عنوان المقال التجريبي: أهمية التقنية وتطوير الويب في عصرنا</h3>
+        <p style="line-height: 1.8; color: #ddd;">
+          هذا نص تجريبي لمقالك الأول. يمكنك قراءة المقال والاستمتاع بمحتواه التقني، وإذا أردت مشاركة رأيك، يمكنك كتابة تعليقك في الأسفل مع إدخال اسمك ووسيلة تواصل واحدة فقط (البريد الإلكتروني أو رقم الهاتف).
+        </p>
+      </div>
+
+      <!-- نموذج التعليقات -->
+      <div class="article-section">
+        <h3>اضف تعليقاً على المقال</h3>
+        <form id="commentForm">
+          <!-- معرف المقال -->
+          <input type="hidden" id="postId" value="article-1">
+
+          <!-- الاسم (4 أحرف فأكثر) -->
+          <div style="text-align: right;">
+            <label style="display:block; margin-bottom: 5px; font-size: 14px;">الاسم الكامل * (4 أحرف على الأقل):</label>
+            <input type="text" id="userName" required placeholder="أدخل اسمك">
+            <small id="nameError" style="color: #ff6b6b; display: none;">الاسم يجب ألا يقل عن 4 أحرف.</small>
+          </div>
+
+          <!-- الإيميل أو الهاتف (أحدهما فقط) -->
+          <div style="text-align: right;">
+            <label style="display:block; margin-bottom: 5px; font-size: 14px;">وسيلة التواصل * (أدخل إما إيميلك أو هاتفك وليس كلاهما):</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="email" id="userEmail" placeholder="البريد الإلكتروني">
+              <input type="tel" id="userPhone" placeholder="رقم الهاتف">
+            </div>
+            <small id="contactError" style="color: #ff6b6b; display: none;">الرجاء إدخال إما البريد أو الهاتف (وليس الاثنين معاً).</small>
+          </div>
+
+          <!-- التعليق -->
+          <div style="text-align: right;">
+            <label style="display:block; margin-bottom: 5px; font-size: 14px;">التعليق *:</label>
+            <textarea id="userComment" required placeholder="اكتب تعليقك هنا..."></textarea>
+          </div>
+
+          <button type="submit">إرسال التعليق</button>
+        </form>
+      </div>
+
+      <!-- عرض التعليقات للجمهور -->
+      <div style="max-width: 600px; margin: 30px auto; text-align: right;">
+        <h3>التعليقات المنشورة</h3>
+        <div id="commentsList" style="margin-top: 15px;">
+          <p style="color: #aaa;">جاري تحميل التعليقات...</p>
+        </div>
       </div>
     </div>
 
@@ -155,12 +205,9 @@
       <section class="contact-section">
         <form action="https://api.web3forms.com/submit" method="POST">
             <input type="hidden" name="access_key" value="23260462-fe4b-482d-baf4-7a5749f12367">
-            
-            
             <input type="text" name="name" placeholder="الاسم الكامل" required>
             <input type="email" name="email" placeholder="البريد الإلكتروني" required>
             <textarea name="message" placeholder="اكتب رسالتك هنا..." required></textarea>
-            
             <button type="submit">إرسال الرسالة</button>
         </form>
       </section>
@@ -180,7 +227,109 @@
     </p>
   </footer>
 
-  <!-- ربط ملف الجافا سكريبت -->
+  <!-- استدعاء مكتبة Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // 1. ربط الموقع بـ Supabase (ضع بياناتك هنا)
+    const SUPABASE_URL = 'ضع_رابط_مشروعك_هنا';
+    const SUPABASE_KEY = 'ضع_مفتاح_anon_key_هنا';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const currentPostId = document.getElementById('postId').value;
+
+    // 2. جلب وعرض التعليقات
+    async function loadComments() {
+      const commentsList = document.getElementById('commentsList');
+      
+      const { data, error } = await supabaseClient
+        .from('comments')
+        .select('name, comment, created_at')
+        .eq('post_id', currentPostId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        commentsList.innerHTML = '<p style="color: red;">حدث خطأ في تحميل التعليقات.</p>';
+        return;
+      }
+
+      if (data.length === 0) {
+        commentsList.innerHTML = '<p style="color: #777;">لا توجد تعليقات بعد. كن أول من يعلق!</p>';
+        return;
+      }
+
+      commentsList.innerHTML = '';
+      data.forEach(c => {
+        const date = new Date(c.created_at).toLocaleDateString('ar-EG');
+        commentsList.innerHTML += `
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; margin-bottom: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-weight: bold; color: rgb(213, 219, 55);">${escapeHtml(c.name)} <span style="font-size: 12px; color: #aaa; font-weight: normal; margin-right: 10px;">• ${date}</span></div>
+            <p style="margin: 8px 0 0 0; color: #eee; font-size: 15px;">${escapeHtml(c.comment)}</p>
+          </div>
+        `;
+      });
+    }
+
+    // 3. التحقق وإرسال التعليق
+    document.getElementById('commentForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('userName').value.trim();
+      const email = document.getElementById('userEmail').value.trim();
+      const phone = document.getElementById('userPhone').value.trim();
+      const comment = document.getElementById('userComment').value.trim();
+
+      // إخفاء الأخطاء السابقة
+      document.getElementById('nameError').style.display = 'none';
+      document.getElementById('contactError').style.display = 'none';
+
+      // شرط الاسم: ألا يقل عن 4 أحرف
+      if (name.length < 4) {
+        document.getElementById('nameError').style.display = 'block';
+        return;
+      }
+
+      // شرط التواصل: إدخال أحدهما فقط (إيميل أو هاتف)
+      const hasEmail = email !== "";
+      const hasPhone = phone !== "";
+
+      if ((hasEmail && hasPhone) || (!hasEmail && !hasPhone)) {
+        document.getElementById('contactError').style.display = 'block';
+        return;
+      }
+
+      // إرسال البيانات لقاعدة البيانات
+      const { error } = await supabaseClient
+        .from('comments')
+        .insert([
+          { 
+            name: name, 
+            email: hasEmail ? email : null, 
+            phone: hasPhone ? phone : null, 
+            comment: comment, 
+            post_id: currentPostId 
+          }
+        ]);
+
+      if (error) {
+        alert('حدث خطأ أثناء إرسال التعليق، حاول مرة أخرى.');
+        console.error(error);
+      } else {
+        alert('تم نشر تعليقك بنجاح!');
+        document.getElementById('commentForm').reset();
+        loadComments(); // إعادة تحميل التعليقات لتظهر فوراً
+      }
+    });
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // تشغيل جلب التعليقات عند فتح الصفحة
+    loadComments();
+  </script>
+
+  <!-- ربط ملف الجافا سكريبت الأصلي الخاص بك -->
   <script src="nsr.js"></script>
 </body>
 </html>
