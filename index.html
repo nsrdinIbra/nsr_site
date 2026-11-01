@@ -16,18 +16,17 @@
     <p>بسم الله الرحمن الرحيم</p>
     <h1>Eng. Nasreldin Ibrahim  - Abu awab</h1>
     
+    <!-- 3 أزرار رئيسية فقط -->
     <nav>
       <button class="nav-btn active" data-target="home">الرئيسية</button>
       <button class="nav-btn" data-target="articles">المقالات</button>
-      <button class="nav-btn" data-target="about">عني (معلومات عني)</button>
-      <button class="nav-btn" data-target="education">التعليم والمهارات</button>
-      <button class="nav-btn" data-target="contact">التواصل</button>
+      <button class="nav-btn" data-target="contact">تواصل معنا</button>
     </nav>
   </header>
 
   <main>
     
-    <!-- 1. الرئيسية (تحتوي الآن على الصور وفيديو التلاوة بحجم منسق) -->
+    <!-- 1. الرئيسية -->
     <div id="home" class="tab-content active">
       <div class="images-container">
         <img src="ns1.jpg" alt="الصورة الأولى" class="profile-img">
@@ -77,22 +76,24 @@
       </div>
     </div>
 
-    <!-- 3. عني -->
-    <div id="about" class="tab-content">
-      <h2>معلومات عني</h2>
-      <div class="about-flex-container">
+    <!-- 3. تواصل معنا (الزر الأخير: يجمع التعليم، المهارات، عني، ونموذج التواصل) -->
+    <div id="contact" class="tab-content">
+      <h2>عني، التعليم، والتواصل</h2>
+      
+      <!-- معلومات عني -->
+      <div class="about-flex-container" style="margin-bottom: 30px;">
         <p class="about-text">
           أنا نصر الدين إبراهيم محمد بلولة، مهندس برمجيات ومتخصص في الدعم التقني وفني حاسوب.<br>
-          مهتم بتعلم وتعليم لغات البرمجة ومتخصص في تطوير صفحات الويب
+          مهتم بتعلم وتعليم لغات البرمجة ومتخصص في تطوير صفحات الويب.
         </p>
-        <img src="ns6.jpg" alt="الصورة الرابعة" class="profile-img">
+        <img src="ns6.jpg" alt="الصورة الشخصية" class="profile-img">
       </div>
-    </div>
 
-    <!-- 4. التعليم والمهارات -->
-    <div id="education" class="tab-content">
-      <h2>التعليم والمهارات</h2>
-      <ul class="education-list">
+      <hr style="border-color: rgba(255,255,255,0.1); margin: 25px auto; max-width: 600px;">
+
+      <!-- التعليم والمهارات -->
+      <h3 style="color: rgb(213, 219, 55); margin-bottom: 15px;">التعليم والمهارات</h3>
+      <ul class="education-list" style="margin-bottom: 30px; text-align: right; display: inline-block;">
         <li>درست مرحلة الاساس بمدرسة الصاحبين في سوبا</li>
         <li>مرحلة الثانوية بمدرسة الخرطوم القديمة النموذجية</li>
         <li>🎓 بكالوريوس علوم الحاسوب جامعة بحري</li>
@@ -104,11 +105,10 @@
           </a>
         </li>
       </ul>
-    </div>
 
-    <!-- 5. التواصل -->
-    <div id="contact" class="tab-content">
-      <h2>تواصل معي</h2>
+      <hr style="border-color: rgba(255,255,255,0.1); margin: 25px auto; max-width: 600px;">
+
+      <!-- نموذج التواصل -->
       <p>يمكنك التواصل معي مباشرة عبر البريد الإلكتروني أو من خلال النموذج أدناه:</p>
       <p><a href="mailto:nasrbalola03@gmail.com" class="cv-btn">nasrbalola03@gmail.com</a></p>
 
@@ -130,4 +130,15 @@
     <a href="https://www.facebook.com/nsrblola" target="_blank" title="my facebook">صفحتي على الفيسبوك</a> <br><br>
     <a href="https://www.youtube.com/@NasreldinBlola" target="_blank" title="my youtube channel">قناتي على اليوتيوب</a> <br><br>
     <a href="https://www.blogger.com/blog/posts/6119901390349077400?bpli=1&pli=1" target="_blank" title="my blogger">صفحتي على بلوقر</a> <br><br>
-    <a href="
+    <a href="https://www.linkedin.com/in/nasr-eldin-ibrahim-mohamed-blola-740b6984/?isSelfProfile=true" target="_blank" title="my linkedin">صفحتي على لنكد إن</a>
+    
+    <p class="footer-rights">
+      Author: Nasreldin Ibrahim Mohamed<br>
+      &copy; Rights reserved حقوق النشر محفوظة
+    </p>
+  </footer>
+
+  <!-- ملف الجافاسكريبت الخاص بك -->
+  <script src="nsr.js"></script>
+</body>
+</html>
