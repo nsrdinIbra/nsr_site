@@ -27,76 +27,52 @@
 
   <main>
     
-    <div class="video-container">
-        <h2>حبابكم عشرة بلا كشرة</h2>
-        <h3>تلاوة خاشعة</h3>
-        <iframe 
-          width="100%" 
-          height="315" 
-          src="https://www.youtube.com/embed/mkaevD14ayk" 
-          title="انس الغامدي - مجموعة من اجمل التلاوات" 
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen>
-        </iframe>
-    </div>
-  
-    <!-- 1. الرئيسية -->
+    <!-- 1. الرئيسية (تحتوي الآن على الصور وفيديو التلاوة بحجم منسق) -->
     <div id="home" class="tab-content active">
       <div class="images-container">
         <img src="ns1.jpg" alt="الصورة الأولى" class="profile-img">
         <img src="zol.jpeg" alt="الصورة الشخصية" class="profile-img">
         <img src="ns5.jpeg" alt="الصورة الثالثة" class="profile-img">
       </div>
+
+      <!-- صندوق الفيديو بحجم مناسب في الصفحة الأولى -->
+      <div class="home-video-container">
+          <h3>حبابكم عشرة بلا كشرة - تلاوة خاشعة</h3>
+          <iframe class="home-video"
+              src="https://www.youtube.com/embed/mkaevD14ayk" 
+              title="انس الغامدي - مجموعة من اجمل التلاوات" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+          </iframe>
+      </div>
     </div>
 
     <!-- 2. المقالات والتعليقات -->
     <div id="articles" class="tab-content">
-      <h2>قسم المقالات</h2>
+      <h2>قسم المقالات والمدونة</h2>
       
-      <div class="article-box">
-        <h3>عنوان المقال التجريبي: أهمية التقنية وتطوير الويب في عصرنا</h3>
-        <p>
-          هذا نص تجريبي لمقالك الأول. يمكنك قراءة المقال والاستمتاع بمحتواه التقني، وإذا أردت مشاركة رأيك، يمكنك كتابة تعليقك في الأسفل مع إدخال اسمك ووسيلة تواصل واحدة (البريد الإلكتروني أو رقم الهاتف).
-        </p>
+      <!-- قائمة المقالات (تظهر افتراضياً) -->
+      <div id="articles-container">
+        <p style="color: #666; margin-bottom: 15px;">اختر مقالاً لقراءته ومشاركة رأيك حوله:</p>
+        <div id="articles-list">
+          <!-- يتم تحميل المقالات ديناميكياً عبر الجافاسكريبت -->
+        </div>
       </div>
 
-      <!-- نموذج كتابة التعليق -->
-      <div class="article-section">
-        <h3>اضف تعليقاً على المقال</h3>
-        <form id="commentForm">
-          <input type="hidden" id="postId" value="article-1">
+      <!-- سكشن عرض المقال المنفرد مع صندوق تعليقات Disqus الخاص به -->
+      <div id="single-article-view" style="display: none;">
+        <button type="button" class="back-btn" onclick="backToArticlesList()" style="padding: 8px 16px; margin-bottom: 15px; cursor: pointer; background: #0056b3; color: #fff; border: none; border-radius: 4px;">⬅ العودة لقائمة المقالات</button>
+        
+        <article class="article-card" style="background: #ffffff; color: #333; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+          <h2 id="single-article-title" style="color: #0056b3; margin-bottom: 10px;"></h2>
+          <div id="single-article-date" style="color: #777; margin-bottom: 15px; font-size: 14px;"></div>
+          <div id="single-article-content" style="line-height: 1.8; font-size: 17px; text-align: right;"></div>
+        </article>
 
-          <div class="form-field">
-            <label>الاسم الكامل * (4 أحرف على الأقل):</label>
-            <input type="text" id="userName" required placeholder="أدخل اسمك">
-            <small id="nameError" class="error-message">الاسم يجب ألا يقل عن 4 أحرف.</small>
-          </div>
-
-          <!-- حقل وسيلة التواصل المدمج (في مستطيل واحد) -->
-          <div class="form-field">
-            <label>وسيلة التواصل * (البريد الإلكتروني أو رقم الهاتف):</label>
-            <input type="text" id="userContact" required placeholder="أدخل بريدك الإلكتروني أو رقم هاتفك">
-            <small id="contactError" class="error-message">الرجاء إدخال وسيلة تواصل صحيحة.</small>
-          </div>
-
-          <div class="form-field">
-            <label>التعليق *:</label>
-            <textarea id="userComment" required placeholder="اكتب تعليقك هنا..."></textarea>
-          </div>
-
-          <button type="submit">إرسال التعليق</button>
-          
-          <!-- عنصر رسالة الترحيب التفاعلية -->
-          <div id="welcomeMessage" style="color: rgb(213, 219, 55); font-weight: bold; margin-top: 15px; display: none;"></div>
-        </form>
-      </div>
-
-      <!-- قائمة عرض التعليقات -->
-      <div class="comments-display-area">
-        <h3>التعليقات المنشورة</h3>
-        <div id="commentsList">
-          <p style="color: #aaa;">جاري تحميل التعليقات...</p>
+        <!-- صندوق تعليقات Disqus المخصص لهذا المقال -->
+        <div class="disqus-container" style="margin-top: 30px; background: #fff; padding: 20px; border-radius: 8px;">
+          <h3 style="color: #0056b3; margin-bottom: 15px;">💬 التعليقات والمناقشة على هذا المقال</h3>
+          <div id="disqus_thread"></div>
         </div>
       </div>
     </div>
@@ -154,17 +130,4 @@
     <a href="https://www.facebook.com/nsrblola" target="_blank" title="my facebook">صفحتي على الفيسبوك</a> <br><br>
     <a href="https://www.youtube.com/@NasreldinBlola" target="_blank" title="my youtube channel">قناتي على اليوتيوب</a> <br><br>
     <a href="https://www.blogger.com/blog/posts/6119901390349077400?bpli=1&pli=1" target="_blank" title="my blogger">صفحتي على بلوقر</a> <br><br>
-    <a href="https://www.linkedin.com/in/nasr-eldin-ibrahim-mohamed-blola-740b6984/?isSelfProfile=true" target="_blank" title="my linkedin">صفحتي على لنكد إن</a>
-    
-    <p class="footer-rights">
-      Author: Nasreldin Ibrahim Mohamed<br>
-      &copy; Rights reserved حقوق النشر محفوظة
-    </p>
-  </footer>
-
-  <!-- مكتبة Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- ملف الجافاسكريبت الخاص بك -->
-  <script src="nsr.js"></script>
-</body>
-</html>
+    <a href="
