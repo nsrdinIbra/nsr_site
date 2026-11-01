@@ -1,7 +1,7 @@
 // ==========================================
 // 1. إعدادات Disqus لموقعك الشخصي
 // ==========================================
-const DISQUS_SHORTNAME = 'YOUR_PERSONAL_SHORTNAME'; // استبدل هذا لاحقاً بالـ Shortname الخاص بك
+const DISQUS_SHORTNAME = 'balola';
 
 // ==========================================
 // 2. قائمة مقالاتك الشخصية والتقنية
@@ -25,7 +25,6 @@ const siteArticles = [
 // 3. تشغيل الكود بمجرد تحميل الصفحة بالكامل
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("تم تحميل الصفحة بنجاح!");
 
     // إدارة التنقل بين الأقسام (Tabs Navigation)
     const navButtons = document.querySelectorAll('.nav-btn');
