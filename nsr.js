@@ -1,8 +1,7 @@
 // ==========================================
 // 1. إعدادات Disqus لموقعك الشخصي
 // ==========================================
-// استبدل 'YOUR_PERSONAL_SHORTNAME' بالـ Shortname الخاص بموقعك على Disqus
-const DISQUS_SHORTNAME = 'YOUR_PERSONAL_SHORTNAME';
+const DISQUS_SHORTNAME = 'YOUR_PERSONAL_SHORTNAME'; // استبدل هذا لاحقاً بالـ Shortname الخاص بك
 
 // ==========================================
 // 2. قائمة مقالاتك الشخصية والتقنية
@@ -12,7 +11,7 @@ const siteArticles = [
         id: "post_1",
         title: "أهمية التقنية وتطوير الويب في عصرنا الحديث",
         date: "1 نوفمبر 2026",
-        content: "هذا هو المقال الأول في مدونتي الشخصية. نتناول فيه أحدث تقنيات الويب، وكيفية بناء واجهات تفاعلية نظيفة باستخدام HTML5 و CSS3 و JavaScript الخالص دون تعقيدات زائدة لضمان سرعة فائقة للموقع وتجربة مستخدم متميزة."
+        content: "هذا هو المقال الأول في مدونتي الشخصية. نتناول فيه أحدث تقنيات الويب، وكيفية بناء واجهات تفاعلية نظيفة باستخدام HTML5 و CSS3 و JavaScript الخالص لضمان سرعة فائقة وتجربة مستخدم متميزة."
     },
     {
         id: "post_2",
@@ -26,37 +25,44 @@ const siteArticles = [
 // 3. تشغيل الكود بمجرد تحميل الصفحة بالكامل
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("تم تحميل الصفحة وجاهز لتشغيل التبويبات...");
 
     // إدارة التنقل بين الأقسام (Tabs Navigation)
     const navButtons = document.querySelectorAll('.nav-btn');
     const tabContents = document.querySelectorAll('.tab-content');
 
+    console.log("عدد الأزرار المكتشفة:", navButtons.length);
+    console.log("عدد الأقسام المكتشفة:", tabContents.length);
+
     navButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // إزالة حالة النشاط من جميع الأزرار والأقسام
+        button.addEventListener('click', (e) => {
+            const targetId = button.getAttribute('data-target');
+            console. تم النقر على الزر المتجه إلى: targetId);
+
+            // إزالة الكلاس active من جميع الأزرار والأقسام
             navButtons.forEach(btn => btn.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
 
-            // تفعيل الزر والقسم المختار
+            // إضافة الكلاس active للزر والهدف المحدد
             button.classList.add('active');
-            const targetId = button.getAttribute('data-target');
             const targetContent = document.getElementById(targetId);
             
             if (targetContent) {
                 targetContent.classList.add('active');
+                console.log("تم إظهار القسم بنجاح:", targetId);
+            } else {
+                console.error("القسم المستهدف غير موجود في HTML:", targetId);
             }
         });
     });
 
-    // تحميل قائمة المقالات عند فتح الصفحة
+    // تحميل قائمة المقالات
     loadArticlesList();
 });
 
 // ==========================================
 // 4. دالّات إدارة عرض المقالات والتعليقات
 // ==========================================
-
-// عرض جميع المقالات في قسم المقالات
 function loadArticlesList() {
     const listContainer = document.getElementById('articles-list');
     if (!listContainer) return;
@@ -64,7 +70,7 @@ function loadArticlesList() {
     listContainer.innerHTML = '';
     siteArticles.forEach(art => {
         const card = document.createElement('div');
-        card.style.cssText = 'background: rgba(255,255,255,0.03); padding: 18px; margin-bottom: 15px; border-radius: 8px; border-right: 5px solid rgb(213, 219, 55); cursor: pointer; transition: 0.3s; text-align: right;';
+        card.style.cssText = 'background: rgba(255,255,255,0.03); padding: 18px; margin-bottom: 15px; border-radius: 8px; border-right: 5px solid rgb(213, 219, 55); cursor: pointer; text-align: right;';
         card.onclick = () => openSingleArticle(art.id);
         
         card.innerHTML = `
@@ -77,7 +83,6 @@ function loadArticlesList() {
     });
 }
 
-// فتح مقال منفرد وإخفاء قائمة المقالات
 function openSingleArticle(articleId) {
     const article = siteArticles.find(a => a.id === articleId);
     if (!article) return;
@@ -89,19 +94,14 @@ function openSingleArticle(articleId) {
     document.getElementById('single-article-date').textContent = `📅 ${article.date}`;
     document.getElementById('single-article-content').textContent = article.content;
 
-    // تحميل صندوق Disqus المخصص لهذا المقال
     loadDisqusForArticle(article.id, article.title);
 }
 
-// العودة لقائمة المقالات
 function backToArticlesList() {
     document.getElementById('single-article-view').style.display = 'none';
     document.getElementById('articles-container').style.display = 'block';
 }
 
-// ==========================================
-// 5. ربط تعليقات Disqus الديناميكية لكل مقال
-// ==========================================
 function loadDisqusForArticle(articleId, articleTitle) {
     const articleUrl = window.location.href.split('#')[0] + '#!' + articleId;
 
