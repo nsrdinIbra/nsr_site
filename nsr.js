@@ -25,19 +25,15 @@ const siteArticles = [
 // 3. تشغيل الكود بمجرد تحميل الصفحة بالكامل
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("تم تحميل الصفحة وجاهز لتشغيل التبويبات...");
+    console.log("تم تحميل الصفحة بنجاح!");
 
     // إدارة التنقل بين الأقسام (Tabs Navigation)
     const navButtons = document.querySelectorAll('.nav-btn');
     const tabContents = document.querySelectorAll('.tab-content');
 
-    console.log("عدد الأزرار المكتشفة:", navButtons.length);
-    console.log("عدد الأقسام المكتشفة:", tabContents.length);
-
     navButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
+        button.addEventListener('click', () => {
             const targetId = button.getAttribute('data-target');
-            console. تم النقر على الزر المتجه إلى: targetId);
 
             // إزالة الكلاس active من جميع الأزرار والأقسام
             navButtons.forEach(btn => btn.classList.remove('active'));
@@ -49,9 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (targetContent) {
                 targetContent.classList.add('active');
-                console.log("تم إظهار القسم بنجاح:", targetId);
-            } else {
-                console.error("القسم المستهدف غير موجود في HTML:", targetId);
             }
         });
     });
