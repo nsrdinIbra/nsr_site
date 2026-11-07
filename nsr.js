@@ -3,28 +3,41 @@
 // ==========================================
 const DISQUS_SHORTNAME = 'balola';
 
-// ==========================================
-// 2. قائمة مقالاتك الشخصية والتقنية
-// ==========================================
-const siteArticles = [
-    {
-        id: "post_1",
-        title: "أهمية التقنية وتطوير الويب في عصرنا الحديث",
-        date: "1 نوفمبر 2026",
-        content: "هذا هو المقال الأول في مدونتي الشخصية. نتناول فيه أحدث تقنيات الويب، وكيفية بناء واجهات تفاعلية نظيفة باستخدام HTML5 و CSS3 و JavaScript الخالص لضمان سرعة فائقة وتجربة مستخدم متميزة."
-    },
-    {
-        id: "post_2",
-        title: "مهارات مهندس البرمجيات والدعم التقني الناجح",
-        date: "25 أكتوبر 2026",
-        content: "العمل كمهندس برمجيات وفني حاسوب يتطلب مزيجاً من الفهم العميق لخوارزميات البرمجة وقدرة عالية على حل المشكلات التقنية وصيانة الأنظمة بكفاءة عالية..."
-    }
-];
+// متغير عام لتخزين المقالات بعد جلبها من الملف
+let siteArticles = [];
 
 // ==========================================
-// 3. تشغيل الكود بمجرد تحميل الصفحة بالكامل
+// 2. جلب المقالات من ملف article.json عند تحميل الصفحة
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+    // جلب ملف article.json (تأكد من وجود الملف في نفس مسار الموقع)
+    fetch('article.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('فشل في تحميل ملف المقالات');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // تخزين البيانات داخل المصفوفة وتحويل الـ id ليكون نصياً (لتوافق مع نظام المعرفات)
+            siteArticles = data.map(article => ({
+                id: String(article.id),
+                title: article.title,
+                date: article.date,
+                category: article.category,
+                content: article.content
+            }));
+
+            // تحميل قائمة المقالات واعرضها في الصفحة
+            loadArticlesList();
+        })
+        .catch(error => {
+            console.error('حدث خطأ أثناء جلب المقالات:', error);
+            const listContainer = document.getElementById('articles-list');
+            if (listContainer) {
+                listContainer.innerHTML = '<p style="color: #ff6b6b; text-align: center;">عذراً، تعذر تحميل المقالات حالياً.</p>';
+            }
+        });
 
     // إدارة التنقل بين الأقسام (Tabs Navigation)
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -47,28 +60,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    // تحميل قائمة المقالات
-    loadArticlesList();
 });
 
 // ==========================================
-// 4. دالّات إدارة عرض المقالات والتعليقات
+// 3. دالّات إدارة عرض المقالات والتعليقات
 // ==========================================
 function loadArticlesList() {
     const listContainer = document.getElementById('articles-list');
     if (!listContainer) return;
 
     listContainer.innerHTML = '';
+    
+    if (siteArticles.length === 0) {
+        listContainer.innerHTML = '<p style="color: #aaa; text-align: center;">لا توجد مقالات مضافة حالياً.</p>';
+        return;
+    }
+
     siteArticles.forEach(art => {
         const card = document.createElement('div');
         card.style.cssText = 'background: rgba(255,255,255,0.03); padding: 18px; margin-bottom: 15px; border-radius: 8px; border-right: 5px solid rgb(213, 219, 55); cursor: pointer; text-align: right;';
         card.onclick = () => openSingleArticle(art.id);
         
+        // عرض التصنيف والتاريخ ومقدمة المحتوى
         card.innerHTML = `
-            <h3 style="margin: 0 0 8px 0; color: rgb(213, 219, 55);">${art.title}</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="margin: 0; color: rgb(213, 219, 55);">${art.title}</h3>
+                <span style="font-size: 11px; background: rgba(213, 219, 55, 0.1); color: rgb(213, 219, 55); padding: 2px 8px; border-radius: 4px;">${art.category || 'مقال'}</span>
+            </div>
             <div style="font-size: 13px; color: #aaa; margin-bottom: 8px;">📅 ${art.date}</div>
-            <p style="margin: 0 0 10px 0; color: #ddd; line-height: 1.6;">${art.content.substring(0, 110)}...</p>
+            <p style="margin: 0 0 10px 0; color: #ddd; line-height: 1.6; white-space: pre-line;">${art.content.substring(0, 110)}...</p>
             <span style="color: rgb(213, 219, 55); font-weight: bold; font-size: 14px;">اقرأ المقال وعلق عليه 💬</span>
         `;
         listContainer.appendChild(card);
